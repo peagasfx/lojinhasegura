@@ -1,0 +1,1 @@
+import{j as e}from"./index-MPI7K_lV.js";const o=({description:r})=>e.jsxs("div",{className:"p-4 border-t border-border",children:[e.jsx("h2",{className:"font-bold text-lg mb-3",children:"Sobre o produto"}),e.jsx("p",{className:"text-sm leading-relaxed text-muted-foreground whitespace-pre-line",children:r})]});export{o as ProductDescription};
