@@ -1,0 +1,128 @@
+
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="theme-color" content="#ff6e36" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="format-detection" content="telephone=no" />
+   <script>
+(function(){
+'use strict';
+var PIXEL_ID='D6DOUEBC77U3BV5J70MG',META_PIXEL_ID='SEU_META_PIXEL_ID',STORAGE_KEY='_vt',COOKIE_DAYS=7;
+
+function sha256(s){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(function(b){return Array.from(new Uint8Array(b)).map(function(x){return x.toString(16).padStart(2,'0')}).join('')})}
+function uuid(){return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,function(c){var r=Math.random()*16|0;return(c=='x'?r:r&0x3|0x8).toString(16)})}
+function fp(){return{ua:navigator.userAgent,lang:navigator.language,tz:Intl.DateTimeFormat().resolvedOptions().timeZone,scr:screen.width+'x'+screen.height,dep:screen.colorDepth,plt:navigator.platform}}
+function sid(){var s=sessionStorage.getItem('_vt_sid');if(!s){s=uuid();sessionStorage.setItem('_vt_sid',s)}return s}
+function setCk(n,v,d){document.cookie=n+'='+encodeURIComponent(v)+';expires='+new Date(Date.now()+d*864e5).toUTCString()+';path=/;SameSite=Lax'}
+function getCk(n){var m=document.cookie.match(new RegExp('(?:^|; )'+n+'=([^;]*)'));return m?decodeURIComponent(m[1]):null}
+function save(d){var j=JSON.stringify(d);try{sessionStorage.setItem(STORAGE_KEY,j)}catch(e){}try{localStorage.setItem(STORAGE_KEY,j)}catch(e){}try{setCk(STORAGE_KEY,j,COOKIE_DAYS)}catch(e){}}
+function load(){var r=null;try{r=sessionStorage.getItem(STORAGE_KEY)}catch(e){}if(!r)try{r=localStorage.getItem(STORAGE_KEY)}catch(e){}if(!r)try{r=getCk(STORAGE_KEY)}catch(e){}try{return r?JSON.parse(r):{}}catch(e){return{}}}
+function p(n){return new URLSearchParams(location.search).get(n)}
+
+var fresh={ttclid:p('ttclid'),utm_source:p('utm_source'),utm_campaign:p('utm_campaign'),utm_medium:p('utm_medium'),utm_content:p('utm_content'),utm_term:p('utm_term'),src:p('src'),sck:p('sck')};
+var saved=load();
+Object.keys(fresh).forEach(function(k){if(fresh[k])saved[k]=fresh[k]});
+
+// ── META FBC/FBP ──────────────────────────────────────────
+function getFbc(){var fbclid=p('fbclid');if(fbclid){var fbc='fb.1.'+Date.now()+'.'+fbclid;setCk('_fbc',fbc,90);return fbc}return getCk('_fbc')}
+function getFbp(){var fbp=getCk('_fbp');if(!fbp){fbp='fb.1.'+Date.now()+'.'+Math.floor(Math.random()*1e9);setCk('_fbp',fbp,90)}return fbp}
+saved.fbc=getFbc();
+saved.fbp=getFbp();
+
+save(saved);
+window.VT={tracking:saved};
+
+// ── TIKTOK PIXEL ──────────────────────────────────────────
+!function(w,d,t){w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=['page','track','identify','instances','debug','on','off','once','ready','alias','group','enableCookie','disableCookie'];ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e};ttq.load=function(e,n){var i='https://analytics.tiktok.com/i18n/pixel/events.js';ttq._i=ttq._i||{};ttq._i[e]=[];ttq._i[e]._u=i;var o=d.createElement('script');o.type='text/javascript';o.async=!0;o.src=i+'?sdkid='+e+'&lib='+t;var a=d.getElementsByTagName('script')[0];a.parentNode.insertBefore(o,a)};ttq.load(PIXEL_ID,{ttclid:saved.ttclid||undefined});ttq.page()}(window,document,'ttq');
+
+// ── META PIXEL ────────────────────────────────────────────
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init',META_PIXEL_ID);
+fbq('track','PageView');
+
+window.VT.track=function(e,p){try{if(window.ttq)ttq.track(e,p||{})}catch(e){}};
+window.VT.pageView=function(){try{if(window.ttq)ttq.page()}catch(e){}};
+window.VT.identify=function(email,phone){if(!window.ttq)return;var t=[];if(email)t.push(sha256(email.toLowerCase().trim()).then(function(h){return{email:h}}));if(phone)t.push(sha256(phone.replace(/\\D/g,'')).then(function(h){return{phone_number:h}}));Promise.all(t).then(function(r){ttq.identify(Object.assign.apply(null,[{}].concat(r)))})};
+window.VT.formFilled=function(){window.VT.track('AddPaymentInfo')};
+
+// TikTok + Meta InitiateCheckout (deduplication via event_id)
+window.VT.onPixGerado=function(orderId,amount){
+  window.VT.track('InitiateCheckout',{value:amount/100,currency:'BRL',order_id:orderId});
+  try{fbq('track','InitiateCheckout',{value:amount/100,currency:'BRL'},{eventID:orderId+'_checkout_meta'})}catch(e){}
+};
+
+// Meta Lead
+window.VT.trackLead=function(){try{fbq('track','Lead')}catch(e){}};
+
+window.VT.getPayload=function(){var t=load();return{utm_params:t,ttclid:t.ttclid||null,fbc:t.fbc||null,fbp:t.fbp||null,session_id:sid(),fingerprint:fp()}};
+
+window.addEventListener('load',function(){
+  window.VT.track('ViewContent');
+  try{fbq('track','ViewContent')}catch(e){}
+});
+})();
+</script>
+
+
+    <title>Achadinhos da Vitrine | Ofertas Imperdíveis</title>
+    <meta name="description" content="Achadinhos da Vitrine - As melhores ofertas com frete grátis. Até 97% OFF em produtos selecionados. Compre agora!">
+    <meta name="author" content="Hypertech" />
+    
+    <!-- DNS Prefetch for external resources -->
+    <link rel="dns-prefetch" href="//pay.pedidosfeitos.shop">
+    <link rel="dns-prefetch" href="//analytics.tiktok.com">
+  
+    
+    <!-- Preconnect to critical origins -->
+    <link rel="preconnect" href="https://pay.pedidosfeitos.shop" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Resource hints for faster loading -->
+    <link rel="modulepreload" href="data:application/octet-stream;base64,aW1wb3J0IHsgY3JlYXRlUm9vdCB9IGZyb20gInJlYWN0LWRvbS9jbGllbnQiOwppbXBvcnQgQXBwIGZyb20gIi4vQXBwLnRzeCI7CmltcG9ydCAiLi9pbmRleC5jc3MiOwoKY3JlYXRlUm9vdChkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgicm9vdCIpISkucmVuZGVyKDxBcHAgLz4pOwo=">
+
+    <!-- Critical CSS inline for faster FCP -->
+    <style>
+      body { margin: 0; font-family: system-ui, -apple-system, sans-serif; }
+      #root { min-height: 100vh; }
+      .loading-skeleton { background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
+      @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+    </style>
+    
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/af5a3107-69f6-4cc3-ae23-3caabc6220e4/id-preview-6054ac86--8c3f00d0-551c-4f11-bd61-df328d916e62.lovable.app-1773974297624.png">
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@Lovable" />
+    <meta name="twitter:image" content="https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/af5a3107-69f6-4cc3-ae23-3caabc6220e4/id-preview-6054ac86--8c3f00d0-551c-4f11-bd61-df328d916e62.lovable.app-1773974297624.png">
+    
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <meta property="og:title" content="Achadinhos da Vitrine | Ofertas Imperdíveis">
+  <meta name="twitter:title" content="Achadinhos da Vitrine | Ofertas Imperdíveis">
+  <meta property="og:description" content="Achadinhos da Vitrine - As melhores ofertas com frete grátis. Até 97% OFF em produtos selecionados. Compre agora!">
+  <meta name="twitter:description" content="Achadinhos da Vitrine - As melhores ofertas com frete grátis. Até 97% OFF em produtos selecionados. Compre agora!">
+  <script src="/api/extra-produtos.js.php"></script>
+  <script type="module" crossorigin src="/assets/index-MPI7K_lV.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-DZt6yaNu.css">
+<script defer src="https://promodoapp.shop/~flock.js" data-proxy-url="https://promodoapp.shop/~api/analytics"></script></head>
+
+  <body>
+    <div id="root"></div>
+    
+    
+</html>
